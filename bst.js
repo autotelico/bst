@@ -51,7 +51,46 @@ class Tree {
                 tmp = tmp.right;
             }
         }
-        
+
+
+    }
+
+    delete(value) {
+        let tmp = this.root;
+
+        while (tmp !== null) {
+            // Delete single node
+            if (tmp.left.value === value) {
+                if (!tmp.left.right && !tmp.left.left) {
+                    tmp.left = null;
+                    return;
+                }
+            }
+            if (tmp.right.value === value) {
+                if (!tmp.right.left && !tmp.right.right) {
+                    tmp.right = null;
+                    return;
+                }
+            }
+
+            // Delete node with one leaf
+
+            if (tmp.left.left && !tmp.left.right) {
+
+            }
+
+            // Delete node with two leaves
+
+
+
+            // Movement
+            if (value < tmp.value) {
+                tmp = tmp.left;
+            } else {
+                tmp = tmp.right
+            }
+        }
+
 
     }
 }
@@ -72,5 +111,6 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 const bt = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 
 bt.insert(6346)
+bt.delete(9)
 
 prettyPrint(bt.root)
