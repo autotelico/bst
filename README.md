@@ -53,7 +53,3 @@ This project aims to:
 ## 📝 License
 
 This project is open-source and available under the [MIT License](LICENSE).
-
----
-
-Feel free to explore the code, experiment with different implementations, and contribute improvements or suggestions!
