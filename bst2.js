@@ -51,6 +51,8 @@ class BST {
     }
 
     searchIterative(value) {
+        const initialTime = performance.now()
+        
         let node = this.root;
         
         if (node.value === value) return node;
@@ -62,19 +64,27 @@ class BST {
                 node = node.right
             }
         }
+        console.log(`Busca via árvore - O(log n): ${performance.now() - initialTime} ms`);
 
         return node;
     }
 
     searchRecursive(root, value) {
-        
+        if (root === null) return null
+
+        if (root.value > value) {
+
+        }
     }
 }
 
-const bst = new BST([123, 34,35, 12, 23 ,13 ,5, 0, -12, -28, -1]);
+const myArray = [123, 34,35, 12, 23 ,13 ,5, 0, -12, -28, -1];
+const bst = new BST(myArray);
 
 prettyPrint(bst)
 
-const r = bst.searchIterative(124)
+const initialTime = performance.now()
+myArray.find(val => val === 123)
+console.log(`Busca iterativa - O(n): ${performance.now() - initialTime} ms`);
 
-console.log(r);
+const r = bst.searchIterative(123);
