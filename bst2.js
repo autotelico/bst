@@ -127,6 +127,49 @@ class BST {
             return this.insertRecursive(root.right, value);
         }
     }
+
+    deleteIterative(value) {
+        let node = this.root;
+
+        if (node.value > value) {
+            // Go left in this case
+            node = node.left;
+        }
+        if (node.value < value) {
+            // Go right
+            node = node.right
+        }
+    }
+
+    deleteRecursive(root, value) {
+        if (root === null) return null
+        
+        if (root.value > value) {
+            root.left = this.deleteRecursive(root.left, value);
+            return root;
+        }
+        if (root.value < value) {
+            root.right = this.deleteRecursive(root.right, value);
+            return root;
+        }
+        // root.value equals value. Remove the node
+
+        // Case 1 and 2 - if there are 0 or 1 leaf
+        if (!root.left) return root.right;
+        if (!root.right) return root.left;
+
+        // Case 3 - if there are 2 leaves
+        let successor = root.right;
+
+        while (successor.left) {
+            successor = successor.left;
+        }
+        // Replace node to be deleted with its successor
+        root.value = successor.value;
+        root.right = this.deleteRecursive(root.right, successor.value);
+
+        return root;
+    }
 }
 
 const myArray = [123, 34, 35, 12, 23, 13, 5, 0, -12, -28, -1];
@@ -134,5 +177,6 @@ const bst = new BST(myArray);
 
 bst.insertIterative(2)
 bst.insertRecursive(bst.root, 14)
+bst.deleteRecursive(bst.root, 0)
 
 prettyPrint(bst)
