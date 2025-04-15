@@ -128,22 +128,83 @@ class BST {
         }
     }
 
-    deleteIterative(value) {
-        let node = this.root;
+    #handleDeleteIterative(parent, node) {
+        if (!node.right) return node.left
+        if (!node.left) return node.right;
 
-        if (node.value > value) {
-            // Go left in this case
-            node = node.left;
+        let curr = node;
+        let prev = parent;
+
+        prev = curr;
+        curr = curr.right;
+
+        while (curr.left) {
+            prev = curr;
+            curr = curr.left;
         }
-        if (node.value < value) {
-            // Go right
-            node = node.right
+        node.value = curr.value;
+        prev.left = null
+    }
+
+    deleteIterative(value) {
+        let prev = null;
+        let curr = this.root;
+
+        while (curr && curr.value !== value) {
+            prev = curr;
+            if (curr.value > value) {
+                curr = curr.left;
+            } else {
+                curr = curr.right;
+            }
         }
+
+        if (!curr) {
+            throw new Error("Node not found for value " + value);
+        }
+
+        // Case 1
+        if (!curr.left && !curr.right) {
+            if (curr === prev.left) {
+                prev.left = null;
+                return;
+            }
+            if (curr === prev.right) {
+                prev.right = null;
+                return;
+            }
+        }
+        // Case 2
+        if (curr.left && !curr.right || !curr.left && curr.right) {
+            const childNode = curr.left ? curr.left : curr.right;
+            if (prev.left === curr) {
+                prev.left = childNode;
+            }
+            if (prev.right === curr) {
+                prev.right = childNode;
+            }
+
+        }
+        
+        // Case 3
+        let successor = curr.right;
+        while (successor.left) {
+            successor = successor.left;
+        }
+        curr.value = successor.value;
+        
+        prev = curr
+        curr = curr.right;
+        while (curr.left) {
+            prev = curr;
+            curr = curr.left;
+        }
+        prev.left = null;
     }
 
     deleteRecursive(root, value) {
         if (root === null) return null
-        
+
         if (root.value > value) {
             root.left = this.deleteRecursive(root.left, value);
             return root;
@@ -177,6 +238,7 @@ const bst = new BST(myArray);
 
 bst.insertIterative(2)
 bst.insertRecursive(bst.root, 14)
-bst.deleteRecursive(bst.root, 0)
+// bst.deleteRecursive(bst.root, 0)
+// bst.deleteIterative(12)
 
 prettyPrint(bst)
