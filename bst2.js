@@ -83,19 +83,56 @@ class BST {
         if (root.value < value) {
             return this.searchRecursive(root.right, value);
         }
+    }
 
+    insertIterative(value) {
+        let node = this.root;
+        const newNode = new Node(value);
+
+        while (node !== null) {
+            if (node.value > value) {
+                if (node.left === null) {
+                    node.left = newNode;
+                    return;
+                }
+                node = node.left
+            } else {
+                if (node.right === null) {
+                    node.right = newNode;
+                    return;
+                }
+                node = node.right
+
+            }
+
+        }
+    }
+
+    insertRecursive(root, value) {
+        if (root === null) return null;
+
+        const newNode = new Node(value);
+
+        if (root.value > value) {
+            if (!root.left) {
+                root.left = newNode;
+                return;
+            }
+            return this.insertRecursive(root.left, value)
+        } else {
+            if (!root.right) {
+                root.right = newNode;
+                return;
+            }
+            return this.insertRecursive(root.right, value);
+        }
     }
 }
 
 const myArray = [123, 34, 35, 12, 23, 13, 5, 0, -12, -28, -1];
 const bst = new BST(myArray);
 
+bst.insertIterative(2)
+bst.insertRecursive(bst.root, 14)
+
 prettyPrint(bst)
-
-const initialTime = performance.now()
-myArray.find(val => val === -1)
-console.log(`Busca iterativa - O(n): ${performance.now() - initialTime} ms`);
-
-const r = bst.searchIterative(-1);
-const s = bst.searchRecursive(bst.root, -1);
-
