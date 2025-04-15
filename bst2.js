@@ -231,6 +231,30 @@ class BST {
 
         return root;
     }
+
+    levelOrderIterative(cb) {
+        const queue = [];
+        let node = this.root;
+        cb(node.value)
+        if (node.left) {
+            queue.push(node.left);
+        }
+        if (node.right) {
+            queue.push(node.right);
+        }
+
+        while (queue.length > 0) {
+            let curr = queue.shift();
+            cb(curr.value);
+            
+            if (curr.left) {
+                queue.push(curr.left);
+            }
+            if (curr.right) {
+                queue.push(curr.right);
+            }
+        }
+    }
 }
 
 const myArray = [123, 34, 35, 12, 23, 13, 5, 0, -12, -28, -1];
@@ -242,3 +266,5 @@ bst.insertRecursive(bst.root, 14)
 // bst.deleteIterative(12)
 
 prettyPrint(bst)
+
+bst.levelOrderIterative(console.log)
