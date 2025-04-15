@@ -35,7 +35,7 @@ class BST {
     buildTree(array) {
         if (array.length === 0) return null;
         if (array.length === 1) return new Node(array[0])
-        
+
         array = [...new Set(array)].sort((a, b) => a - b);
 
         const middleIndex = Math.floor(array.length / 2);
@@ -43,7 +43,7 @@ class BST {
 
         const leftSide = array.slice(0, middleIndex);
         const rightSide = array.slice(middleIndex + 1);
-    
+
         rootNode.left = this.buildTree(leftSide)
         rootNode.right = this.buildTree(rightSide);
 
@@ -52,9 +52,9 @@ class BST {
 
     searchIterative(value) {
         const initialTime = performance.now()
-        
+
         let node = this.root;
-        
+
         if (node.value === value) return node;
 
         while (node && node.value !== value) {
@@ -64,27 +64,38 @@ class BST {
                 node = node.right
             }
         }
-        console.log(`Busca via árvore - O(log n): ${performance.now() - initialTime} ms`);
+        console.log(`Busca via árvore (iterativa) - O(log n): ${performance.now() - initialTime} ms`);
 
         return node;
     }
 
     searchRecursive(root, value) {
+        const initialTime = performance.now()
         if (root === null) return null
+        if (root.value === value) {
+            console.log(`Busca via árvore (recursiva) - O(log n): ${performance.now() - initialTime} ms`)
+            return root;
+        }
 
         if (root.value > value) {
-
+            return this.searchRecursive(root.left, value);
         }
+        if (root.value < value) {
+            return this.searchRecursive(root.right, value);
+        }
+
     }
 }
 
-const myArray = [123, 34,35, 12, 23 ,13 ,5, 0, -12, -28, -1];
+const myArray = [123, 34, 35, 12, 23, 13, 5, 0, -12, -28, -1];
 const bst = new BST(myArray);
 
 prettyPrint(bst)
 
 const initialTime = performance.now()
-myArray.find(val => val === 123)
+myArray.find(val => val === -1)
 console.log(`Busca iterativa - O(n): ${performance.now() - initialTime} ms`);
 
-const r = bst.searchIterative(123);
+const r = bst.searchIterative(-1);
+const s = bst.searchRecursive(bst.root, -1);
+
