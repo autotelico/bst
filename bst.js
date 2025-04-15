@@ -55,43 +55,40 @@ class Tree {
 
     }
 
-    delete(value) {
-        let tmp = this.root;
+    delete(root, value) {
+        if (root === null) return null;
 
-        while (tmp !== null) {
-            // Delete single node
-            if (tmp.left.value === value) {
-                if (!tmp.left.right && !tmp.left.left) {
-                    tmp.left = null;
-                    return;
-                }
-            }
-            if (tmp.right.value === value) {
-                if (!tmp.right.left && !tmp.right.right) {
-                    tmp.right = null;
-                    return;
-                }
-            }
-
-            // Delete node with one leaf
-
-            if (tmp.left.left && !tmp.left.right) {
-
-            }
-
-            // Delete node with two leaves
-
-
-
-            // Movement
-            if (value < tmp.value) {
-                tmp = tmp.left;
-            } else {
-                tmp = tmp.right
-            }
+        if (value < root.value) {
+            // Go left
+            root.left = this.delete(root.left, value);
+            return root;
+        }
+        if (value > root.value) {
+            root.right = this.delete(root.right, value);
+            return root;
         }
 
+        // Cases 1 & 2 - Node has 0 leaves or 1 leaf
+        if (!root.left) {
+            console.log(`Root ${root.value} is returning the right value`, root.right);
+            return root.right;
+        }
+        if (!root.right) {
+            console.log(`Root ${root.value} is returning the left value! Which is `, root.left);
+            return root.left;
+        }
 
+        // Case 3 - Node has both leaves
+        // Find successor
+        let succ = root.right;
+        while (succ.left) {
+            succ = succ.left;
+        }
+        root.value = succ.value;
+
+        root.right = this.delete(root.right, succ.value);
+
+        return root;
     }
 }
 
@@ -99,6 +96,11 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
     if (node === null) {
         return;
     }
+
+    if ('root' in node) {
+        return prettyPrint(node.root)
+    }
+
     if (node.right !== null) {
         prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
     }
@@ -108,9 +110,9 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
     }
 };
 
-const bt = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
+const bst = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 
-bt.insert(6346)
-bt.delete(9)
+bst.insert(6346)
+bst.delete(bst.root, 8)
 
-prettyPrint(bt.root)
+prettyPrint(bst)
