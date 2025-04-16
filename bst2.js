@@ -427,7 +427,7 @@ class BST {
         const leftNode = root.left
         root.left = root.right;
         root.right = leftNode;
-        
+
         this._invertRecursive(root.left)
         this._invertRecursive(root.right)
         return root;
@@ -454,14 +454,61 @@ class BST {
         return root;
     }
 
+    getFullHeightIterative() {
+        let node = this.root;
+
+        const queue = [node];
+        let counter = -1;
+
+        while (queue.length > 0) {
+            counter++;
+
+            const levelSize = queue.length;
+            
+            for (let i = 0; i < levelSize; i++) {
+                let curr = queue.shift();
+                if (curr.left) {
+                    queue.push(curr.left);
+                }
+                if (curr.right) {
+                    queue.push(curr.right);
+                }
+            }
+        }
+        return counter;
+    }
+
+    getFullHeightRecursive(node, counter = 0) {
+        if (node === null) return counter - 1;
+
+        ++counter;
+        const left = this.getFullHeightRecursive(node.left, counter);
+        const right = this.getFullHeightRecursive(node.right, counter);
+
+        return Math.max(left, right);
+    }
+
+    getFullHeightRecursive2(node) {
+        if (node === null) return -1;
+
+        const left = this.getFullHeightRecursive2(node.left);
+        const right = this.getFullHeightRecursive2(node.right);
+
+        return 1 + Math.max(left, right);
+    }
+
+    isBalanced() {
+        const root = this.root;
+        return this.height(root.left) === this.height(root.right)
+    }
+
 }
 
 const myArray = [123, 34, 35, 12, 23, 13, 5, 0, -12, -28, -1];
 const bst = new BST(myArray);
-bst.invert();
+
+bst.deleteIterative(23)
+
 
 prettyPrint(bst);
-
-// bst.inOrderIterative(console.log)
-// console.log('---');
-// bst.postOrderIterative(console.log)
+console.log(bst.getFullHeightRecursive2(bst.root));
