@@ -317,7 +317,8 @@ class BST {
             counter++;
         }
 
-        return counter;
+        if (!root) return null;
+        if (root.value === value) return counter;
     }
 
     _heightRecursive(root, value, counter = 0) {
