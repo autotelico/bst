@@ -299,12 +299,12 @@ class BST {
         cb(root.value);
     }
 
-    height(value) {
-        // return this._heightRecursive(this.root, value);
-        return this._heightIterative(value);
+    depth(value) {
+        // return this._depthRecursive(this.root, value);
+        return this._depthIterative(value);
     }
 
-    _heightIterative(value) {
+    _depthIterative(value) {
         let counter = 0;
         let root = this.root;
 
@@ -321,16 +321,19 @@ class BST {
         if (root.value === value) return counter;
     }
 
-    _heightRecursive(root, value, counter = 0) {
+    _depthRecursive(root, value, counter = 0) {
         if (root === null) return null;
         if (root.value === value) return counter;
         
         if (root.value > value) {
-            return this._heightRecursive(root.left, value, ++counter);
+            return this._depthRecursive(root.left, value, ++counter);
         } else {
-            return this._heightRecursive(root.right, value, ++counter);
+            return this._depthRecursive(root.right, value, ++counter);
         }
     }
+
+    // It was meant to be called depth, but I accidentally flipped them. Lol
+    
 }
 
 const myArray = [123, 34, 35, 12, 23, 13, 5, 0, -12, -28, -1];
@@ -344,4 +347,4 @@ prettyPrint(bst);
 
 // bst.postOrder(bst.root, console.log);
 
-console.log(bst.height(-28));
+console.log(bst.depth(-28));
