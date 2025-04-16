@@ -336,43 +336,28 @@ class BST {
     }
 
     _heightIterative(node) {
-        let leftCounter = 0;
-        let rightCounter = 0;
-        let leftNode = node.left;
-        let rightNode = node.right;
-        const leftQueue = [];
-        const rightQueue = [];
-
-        if (leftNode) {
-            leftQueue.push(leftNode);
-        }
-        if (rightNode) {
-            rightQueue.push(rightNode);
+        if (node === null) {
+            return -1;
         }
 
-        while (leftQueue.length > 0) {
-            const curr = leftQueue.shift();
-            leftCounter++
-            if (curr.left) {
-                leftQueue.push(curr.left);
-            }
-            if (curr.right) {
-                leftQueue.push(curr.right);
+        let counter = -1;
+        const queue = [node];
+
+        while (queue.length > 0) {
+            counter++;
+            const levelSize = queue.length;
+            for (let i = 0; i < levelSize; i++) {
+                // Iterates over all nodes in the queue
+                const curr = queue.shift();
+                if (curr.left) {
+                    queue.push(curr.left);
+                }
+                if (curr.right) {
+                    queue.push(curr.right);
+                }
             }
         }
-
-        while (rightQueue.length > 0) {
-            const curr = rightQueue.shift();
-            rightCounter++;
-            if (curr?.left) {
-                rightQueue.push(curr.left);
-            }
-            if (curr?.right) {
-                rightQueue.push(curr.right);
-            }
-        }
-
-        return Math.max(leftCounter, rightCounter);
+        return counter;
     }
 
     _heightRecursive(node, counter = 0) {
@@ -392,12 +377,6 @@ class BST {
 const myArray = [123, 34, 35, 12, 23, 13, 5, 0, -12, -28, -1];
 const bst = new BST(myArray);
 
-// bst.insertIterative(14);
-// bst.deleteRecursive(bst.root, 13)
-bst.deleteIterative(35);
-
 prettyPrint(bst);
 
-// bst.postOrder(bst.root, console.log);
-
-console.log(bst.height(-1));
+console.log(bst.depth(-1));
