@@ -332,7 +332,22 @@ class BST {
         }
     }
 
-    // It was meant to be called depth, but I accidentally flipped them. Lol
+    height(value) {
+        const node = this.searchRecursive(this.root, value);
+        return this._heightRecursive(node);
+    }    
+
+    _heightRecursive(node, counter = 0) {
+        if (node === null) {
+            return counter - 1;
+        }
+        counter++;
+        
+        const left = this._heightRecursive(node.left, counter);
+        const right = this._heightRecursive(node.right, counter);
+      
+        return Math.max(left, right);
+    }
     
 }
 
@@ -347,4 +362,4 @@ prettyPrint(bst);
 
 // bst.postOrder(bst.root, console.log);
 
-console.log(bst.depth(-28));
+console.log(bst.height(23));
