@@ -319,15 +319,36 @@ class BST {
         }
 
     }
+
+    postOrder(cb) {
+        const queue = [];
+        const root = this.root;
+        
+        queue.push(root.left);
+
+        while (queue.length > 0) {
+            this._execute(queue.shift(), cb, queue);
+        }
+
+        queue.push(root.right);
+
+        while (queue.length > 0) {
+            this._execute(queue.shift(), cb, queue);
+        }
+
+        queue.push(root);
+        cb(`ROOT: ${root.value}`);
+        queue.shift();
+    }
 }
 
 const myArray = [123, 34, 35, 12, 23, 13, 5, 0, -12, -28, -1];
 const bst = new BST(myArray);
 
-bst.insertIterative(14);
+// bst.insertIterative(14);
 // bst.deleteRecursive(bst.root, 13)
-bst.deleteIterative(12);
+bst.deleteIterative(35);
 
 prettyPrint(bst);
 
-// bst.inOrder(console.log)
+bst.postOrder(console.log)
