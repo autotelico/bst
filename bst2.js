@@ -275,70 +275,28 @@ class BST {
         }
     }
 
-    preOrder(cb) {
-        const queue = [];
-        const root = this.root;
+    preOrder(root, cb) {
+        if (root === null) return null;
 
-
-        queue.push(root.left);
-
-        while (queue.length > 0) {
-            this._execute(queue.shift(), cb, queue);
-        }
-
-        queue.push(root);
-        cb(`ROOT:`, root.value);
-        queue.shift();
-
-        queue.push(root.right);
-
-        while (queue.length > 0) {
-            this._execute(queue.shift(), cb, queue);
-        }
-
+        cb(root.value);
+        this.preOrder(root.left, cb);
+        this.preOrder(root.right, cb)
     }
 
-    inOrder(cb) {
-        const root = this.root;
-        const queue = [];
+    inOrder(root, cb) {
+        if (root === null) return null;
 
-        queue.push(root.left);
-
-        while (queue.length > 0) {
-            this._execute(queue.shift(), cb, queue);
-        }
-
-        queue.push(root);
-        cb(`ROOT: ${root.value}`);
-        queue.shift();
-
-        queue.push(root.right);
-
-        while (queue.length > 0) {
-            this._execute(queue.shift(), cb, queue);
-        }
-
+        this.inOrder(root.left, cb);
+        cb(root.value);
+        this.inOrder(root.right, cb);
     }
 
-    postOrder(cb) {
-        const queue = [];
-        const root = this.root;
-        
-        queue.push(root.left);
+    postOrder(root, cb) {
+        if (root === null) return null;
 
-        while (queue.length > 0) {
-            this._execute(queue.shift(), cb, queue);
-        }
-
-        queue.push(root.right);
-
-        while (queue.length > 0) {
-            this._execute(queue.shift(), cb, queue);
-        }
-
-        queue.push(root);
-        cb(`ROOT: ${root.value}`);
-        queue.shift();
+        this.postOrder(root.left, cb);
+        this.postOrder(root.right, cb);
+        cb(root.value);
     }
 }
 
@@ -351,4 +309,4 @@ bst.deleteIterative(35);
 
 prettyPrint(bst);
 
-bst.postOrder(console.log)
+bst.postOrder(bst.root, console.log);
