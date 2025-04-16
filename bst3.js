@@ -32,18 +32,32 @@ class BST {
     }
 
     searchRec(value, root) {
-        
+
         if (root === null) return null;
         if (root.value === value) return root;
 
         if (root.value > value) {
             return this.searchRec(value, root.left);
-        } 
-        
+        }
+
         if (root.value < value) {
             return this.searchRec(value, root.right);
         }
 
+    }
+
+    searchIter(value) {
+        let node = this.root;
+        if (node === null) return null;
+
+        while (node && node.value !== value) {
+            if (node.value > value) {
+                node = node.left;
+            } else {
+                node = node.right;
+            }
+        }
+        return node;
     }
 }
 
@@ -51,5 +65,5 @@ class BST {
 const bst = new BST([123, 12, 31, 45, 36546, 46, 2, 12, 3, 12, 325, 345])
 prettyPrint(bst);
 
-console.log(bst.searchRec(12, bst.root));
+console.log(bst.searchIter(12));
 
