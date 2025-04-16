@@ -297,6 +297,25 @@ class BST {
         }
     }
 
+    postOrderIterative(cb) {
+        let root = this.root;
+        if (root === null) return;
+
+        const stack = [root];
+
+        while (stack.length > 0) {
+            let curr = stack.pop();
+            if (curr.right) {
+                stack.push(curr.right);
+            }
+            if (curr.left) {
+                stack.push(curr.left);
+            }
+            cb(curr.value);
+        }
+
+    }
+
     preOrderRecursive(root, cb) {
         if (root === null) return null;
 
@@ -396,11 +415,53 @@ class BST {
         return Math.max(left, right);
     }
 
+    invert() {
+        const root = this.root;
+        return this._invertIterative(root);
+    }
+
+    _invertRecursive(root) {
+        if (root === null) return;
+
+        // Invert
+        const leftNode = root.left
+        root.left = root.right;
+        root.right = leftNode;
+        
+        this._invertRecursive(root.left)
+        this._invertRecursive(root.right)
+        return root;
+    }
+
+    _invertIterative(root) {
+        if (root === null) return;
+
+        const stack = [root];
+
+        while (stack.length > 0) {
+            let node = stack.pop();
+            if (node.left) {
+                stack.push(node.left);
+            }
+            if (node.right) {
+                stack.push(node.right);
+            }
+            let leftNode = node.left;
+            node.left = node.right;
+            node.right = leftNode;
+        }
+
+        return root;
+    }
+
 }
 
 const myArray = [123, 34, 35, 12, 23, 13, 5, 0, -12, -28, -1];
 const bst = new BST(myArray);
+bst.invert();
 
 prettyPrint(bst);
 
-bst.inOrderIterative(console.log)
+// bst.inOrderIterative(console.log)
+// console.log('---');
+// bst.postOrderIterative(console.log)
