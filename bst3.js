@@ -30,9 +30,26 @@ class BST {
         rootNode.right = this._buildTree(right);
         return rootNode;
     }
+
+    searchRec(value, root) {
+        
+        if (root === null) return null;
+        if (root.value === value) return root;
+
+        if (root.value > value) {
+            return this.searchRec(value, root.left);
+        } 
+        
+        if (root.value < value) {
+            return this.searchRec(value, root.right);
+        }
+
+    }
 }
 
 
 const bst = new BST([123, 12, 31, 45, 36546, 46, 2, 12, 3, 12, 325, 345])
-
 prettyPrint(bst);
+
+console.log(bst.searchRec(12, bst.root));
+
