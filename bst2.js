@@ -241,18 +241,84 @@ class BST {
       queue.push(node.right);
     }
 
-    while (queue.length > 0) {
-      let curr = queue.shift();
-      cb(curr.value);
+        while (queue.length > 0) {
+            let curr = queue.shift();
+            cb(curr.value);
 
-      if (curr.left) {
-        queue.push(curr.left);
-      }
-      if (curr.right) {
-        queue.push(curr.right);
-      }
+            if (curr.left) {
+                queue.push(curr.left);
+            }
+            if (curr.right) {
+                queue.push(curr.right);
+            }
+        }
     }
-  }
+    levelOrderRecursive(cb, root, queueMemory) {
+        const queue = queueMemory.length > 0 ? queueMemory : [];
+
+        if (root.left) {
+            queue.push(root.left);
+        }
+        if (root.right) {
+            queue.push(root.right);
+        }
+    }
+
+    // Helper function that executes nodes from the queue
+    _execute = (node, callback, queue) => {
+        callback(node.value);
+        if (node.left) {
+            queue.push(node.left);
+        }
+        if (node.right) {
+            queue.push(node.right);
+        }
+    }
+
+    preOrder(cb) {
+        const queue = [];
+        const root = this.root;
+
+
+        queue.push(root.left);
+
+        while (queue.length > 0) {
+            this._execute(queue.shift(), cb, queue);
+        }
+
+        queue.push(root);
+        cb(`ROOT:`, root.value);
+        queue.shift();
+
+        queue.push(root.right);
+
+        while (queue.length > 0) {
+            this._execute(queue.shift(), cb, queue);
+        }
+
+    }
+
+    inOrder(cb) {
+        const root = this.root;
+        const queue = [];
+
+        queue.push(root.left);
+
+        while (queue.length > 0) {
+            this._execute(queue.shift(), cb, queue);
+        }
+
+        queue.push(root);
+        cb(`ROOT: ${root.value}`);
+        queue.shift();
+
+        queue.push(root.right);
+
+        while (queue.length > 0) {
+            this._execute(queue.shift(), cb, queue);
+        }
+
+    }
 }
 
 const myArray = [123, 34, 35, 12, 23, 13, 5, 0, -12, -28, -1];
@@ -264,4 +330,4 @@ bst.deleteIterative(12);
 
 prettyPrint(bst);
 
-// bst.levelOrderIterative(console.log)
+// bst.inOrder(console.log)
