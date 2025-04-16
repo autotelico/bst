@@ -1,21 +1,3 @@
-const prettyPrint = (node, prefix = "", isLeft = true) => {
-    if (node === null) {
-        return;
-    }
-
-    if ("root" in node) {
-        return prettyPrint(node.root);
-    }
-
-    if (node.right !== null) {
-        prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
-    }
-    console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.value}`);
-    if (node.left !== null) {
-        prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
-    }
-};
-
 // Another BST implemented by hand
 
 class Node {
@@ -497,9 +479,15 @@ class BST {
         return 1 + Math.max(left, right);
     }
 
-    isBalanced() {
-        const root = this.root;
-        return this.height(root.left) === this.height(root.right)
+    isBalancedRecursive(root) {
+        if (root === null) return true;
+        
+        const leftHeight = this.height(root.left.value);
+        const rightHeight = this.height(root.right.value);
+        const difference = Math.abs(leftHeight - rightHeight);
+        
+        let isBalanced = !(difference > 1);
+        return this.isBalancedRecursive(root.left) && this.isBalancedRecursive(root.right);
     }
 
 }
@@ -508,7 +496,9 @@ const myArray = [123, 34, 35, 12, 23, 13, 5, 0, -12, -28, -1];
 const bst = new BST(myArray);
 
 bst.deleteIterative(23)
-
+bst.insertIterative(130342)
+bst.insertIterative(130343)
+bst.insertIterative(130344)
 
 prettyPrint(bst);
-console.log(bst.getFullHeightRecursive2(bst.root));
+console.log(bst.isBalancedRecursive(bst.root));
