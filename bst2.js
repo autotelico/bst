@@ -262,38 +262,62 @@ class BST {
         }
     }
 
-    // Helper function that executes nodes from the queue
-    _execute = (node, callback, queue) => {
-        callback(node.value);
-        if (node.left) {
-            queue.push(node.left);
-        }
-        if (node.right) {
-            queue.push(node.right);
+    preOrderIterative(cb) {
+        let root = this.root;
+        if (root === null) throw new Error("The tree has no root to iterate over");
+        const stack = [root];
+
+        while (stack.length > 0) {
+            let curr = stack.pop();
+            cb(curr.value);
+            if (curr.right) {
+                stack.push(curr.right);
+            }
+            if (curr.left) {
+                stack.push(curr.left);
+            }
         }
     }
 
-    preOrder(root, cb) {
+    inOrderIterative(cb) {
+        let root = this.root;
+        if (root === null) return;
+
+        const stack = [];
+
+        while (root !== null || stack.length > 0) {
+            while (root !== null) {
+                stack.push(root);
+                root = root.left;
+            }
+
+            root = stack.pop();
+            cb(root.value);
+            root = root.right;
+        }
+    }
+
+    preOrderRecursive(root, cb) {
         if (root === null) return null;
 
         cb(root.value);
-        this.preOrder(root.left, cb);
-        this.preOrder(root.right, cb)
+        this.preOrderRecursive(root.left, cb);
+        this.preOrderRecursive(root.right, cb)
     }
 
-    inOrder(root, cb) {
+    inOrderRecursive(root, cb) {
         if (root === null) return null;
 
-        this.inOrder(root.left, cb);
+        this.inOrderRecursive(root.left, cb);
         cb(root.value);
-        this.inOrder(root.right, cb);
+        this.inOrderRecursive(root.right, cb);
     }
 
-    postOrder(root, cb) {
+    postOrderRecursive(root, cb) {
         if (root === null) return null;
 
-        this.postOrder(root.left, cb);
-        this.postOrder(root.right, cb);
+        this.postOrderRecursive(root.left, cb);
+        this.postOrderRecursive(root.right, cb);
         cb(root.value);
     }
 
@@ -379,4 +403,4 @@ const bst = new BST(myArray);
 
 prettyPrint(bst);
 
-console.log(bst.depth(-1));
+bst.inOrderIterative(console.log)
