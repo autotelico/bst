@@ -298,6 +298,38 @@ class BST {
         this.postOrder(root.right, cb);
         cb(root.value);
     }
+
+    height(value) {
+        // return this._heightRecursive(this.root, value);
+        return this._heightIterative(value);
+    }
+
+    _heightIterative(value) {
+        let counter = 0;
+        let root = this.root;
+
+        while (root && root.value !== value) {
+            if (root.value > value) {
+                root = root.left;
+            } else {
+                root = root.right;
+            }
+            counter++;
+        }
+
+        return counter;
+    }
+
+    _heightRecursive(root, value, counter = 0) {
+        if (root === null) return null;
+        if (root.value === value) return counter;
+        
+        if (root.value > value) {
+            return this._heightRecursive(root.left, value, ++counter);
+        } else {
+            return this._heightRecursive(root.right, value, ++counter);
+        }
+    }
 }
 
 const myArray = [123, 34, 35, 12, 23, 13, 5, 0, -12, -28, -1];
@@ -309,4 +341,6 @@ bst.deleteIterative(35);
 
 prettyPrint(bst);
 
-bst.postOrder(bst.root, console.log);
+// bst.postOrder(bst.root, console.log);
+
+console.log(bst.height(-28));
