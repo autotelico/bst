@@ -83,4 +83,6 @@ class BST {
 const bst = new BST([123, 12, 31, 45, 36546, 46, 2, 12, 3, 12, 325, 345])
 bst.insertRec(1, bst.root)
 
+console.log(bst.searchIter(1))
+
 prettyPrint(bst);
