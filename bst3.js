@@ -99,12 +99,99 @@ class BST {
             prev.right = newNode;
         }
     }
+
+    deleteRec(value, root) {
+        if (root === null) return null;
+        if (root.value > value) {
+            root.left = this.deleteRec(value, root.left);
+            return root;
+        }
+        if (root.value < value) {
+            root.right = this.deleteRec(value, root.right);
+            return root;
+        }
+        console.log(root);
+
+        // Value equals root value. Treat deletion cases
+
+        // Case 1 and 2 - root has no leaves or 1 leaf
+        if (!root.left) return root.right;
+        if (!root.right) return root.left;
+
+        /**
+         *              (2)
+         *             /  \
+         *           (0)  (3)
+         *               / \
+         *           (2.5) (4)
+         */
+
+        // Case 3 - root has both leaves
+        let successorsParent = root;
+        let successor = root.right;
+        while (successor.left) {
+            successorsParent = successor;
+            successor = successor.left;
+        }
+        root.value = successor.value;
+        successorsParent.left = successor.right;
+    }
+
+    deleteRec2(value, node) {
+        if (node === null) return null;
+        if (node.value > value) {
+            node.left = this.deleteRec2(value, node.left);
+            return node;
+        }
+        if (node.value < value) {
+            node.right = this.deleteRec2(value, node.right);
+            return node;
+        }
+
+        if (!node.left) return node.right;
+        if (!node.right) return node.left;
+
+        let successor = node.right;
+
+        while (successor.left) {
+            successor = successor.left;
+        }
+        node.value = successor.value;
+        node.right = this.deleteRec2(successor.value, node.right);
+        return node;
+    }
+
+    deleteRec3(value, node) {
+        if (node === null) return null;
+        if (node.value > value) {
+            node.left = this.deleteRec3(value, node.left);
+            return node;
+        }
+        if (node.value < value) {
+            node.right = this.deleteRec3(value, node.right);
+            return node;
+        }
+
+        if (!node.left) return node.right;
+        if (!node.right) return node.left;
+
+        let successor = node.right;
+        while (successor.left) {
+            successor = successor.left;
+        }
+        node.value = successor.value;
+        node.right = this.deleteRec3(successor.value, node.right);
+        return node;
+    }
+
+
 }
 
 
-const bst = new BST([123, 12, 31, 45, 36546, 46, 2, 12, 3, 12, 325, 345])
-bst.insertIter(124, bst.root)
+const bst = new BST([123, 12, 31, 45, 36546, 46, 2, 12, 3, 12, 325, 345]);
+bst.insertIter(124, bst.root);
 
-console.log(bst.searchIter(1))
+bst.deleteRec3(46, bst.root)
+bst.deleteRec3(45, bst.root)
 
 prettyPrint(bst);
