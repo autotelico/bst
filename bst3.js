@@ -184,14 +184,29 @@ class BST {
         return node;
     }
 
+    heightIter(value) {
+        let node = this.root;
+        let counter = 0;
+
+        while (node !== null && node.value !== value) {
+            counter++;
+            if (node.value > value) {
+                node = node.left;
+            } else {
+                node = node.right;
+            }
+        }
+        if (!node) return null;
+        return counter;
+    }
+
 
 }
 
 
 const bst = new BST([123, 12, 31, 45, 36546, 46, 2, 12, 3, 12, 325, 345]);
-bst.insertIter(124, bst.root);
 
-bst.deleteRec3(46, bst.root)
-bst.deleteRec3(45, bst.root)
+console.log(bst.heightIter(2));
+
 
 prettyPrint(bst);
