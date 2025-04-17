@@ -1,3 +1,5 @@
+const prettyPrint = require('./utils')
+
 // Another BST implemented by hand
 
 class Node {
@@ -490,6 +492,25 @@ class BST {
         return this.isBalancedRecursive(root.left) && this.isBalancedRecursive(root.right);
     }
 
+    rebalanceIterative() {
+      let root = this.root;
+      const queue = [root];
+      const values = [];
+
+      while (queue.length > 0) {
+        let node = queue.shift();
+        values.push(node.value);
+        if (node.left) {
+          queue.push(node.left);
+        }
+        if (node.right) {
+          queue.push(node.right);
+        }
+      }
+      this.root = this.buildTree(values);
+      return this.root;
+    }
+
 }
 
 const myArray = [123, 34, 35, 12, 23, 13, 5, 0, -12, -28, -1];
@@ -500,5 +521,7 @@ bst.insertIterative(130342)
 bst.insertIterative(130343)
 bst.insertIterative(130344)
 
+bst.rebalanceIterative();
+
 prettyPrint(bst);
-console.log(bst.isBalancedRecursive(bst.root));
+// console.log(bst.isBalancedRecursive(bst.root));

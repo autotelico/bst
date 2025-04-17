@@ -1,4 +1,4 @@
-import { prettyPrint } from "./utils.js";
+const prettyPrint = require('./utils')
 
 class Node {
     constructor(value, left = null, right = null) {
@@ -32,7 +32,6 @@ class BST {
     }
 
     searchRec(value, root) {
-
         if (root === null) return null;
         if (root.value === value) return root;
 
@@ -59,11 +58,29 @@ class BST {
         }
         return node;
     }
+
+    insertRec(value, root) {
+        if (root === null) return;
+        const newNode = new Node(value);
+
+        if (root.value > value) {
+            if (!root.left) {
+                root.left = newNode;
+                return;
+            }
+            return this.insertRec(value, root.left);
+        } else {
+            if (!root.right) {
+                root.right = newNode;
+                return
+            }
+            return this.insertRec(value, root.right);
+        }
+    }
 }
 
 
 const bst = new BST([123, 12, 31, 45, 36546, 46, 2, 12, 3, 12, 325, 345])
+bst.insertRec(1, bst.root)
+
 prettyPrint(bst);
-
-console.log(bst.searchIter(12));
-

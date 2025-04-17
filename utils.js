@@ -16,4 +16,4 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
     }
 };
 
-export { prettyPrint };
+module.exports = prettyPrint;
