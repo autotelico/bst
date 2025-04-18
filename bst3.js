@@ -31,17 +31,25 @@ class BST {
     return rootNode;
   }
 
-  searchRec(value, root) {
+  _findNode(value, root) {
     if (root === null) return null;
     if (root.value === value) return root;
 
-    if (root.value > value) {
-      return this.searchRec(value, root.left);
-    }
-
     if (root.value < value) {
-      return this.searchRec(value, root.right);
+      return this._findNode(value, root.right);
     }
+    if (root.value > value) {
+      return this._findNode(value, root.left);
+    }
+  }
+
+  searchRec(value) {
+    if (!value) {
+      throw new Error("You must pass a node value to be searched");
+    }
+    const root = this.root;
+
+    return this._findNode(value, root);
   }
 
   searchIter(value) {
@@ -58,8 +66,21 @@ class BST {
     return node;
   }
 
-  insertRec(value, root) {
-    if (root === null) return;
+  insert(value) {
+    const root = this.root;
+    this._insertRec(value, root);
+  }
+
+  _insertRec(value, root) {
+    if (this.root === null) {
+      this.root = new Node(value);
+      return;
+    }
+
+    if (root === null) {
+      return;
+    }
+
     const newNode = new Node(value);
 
     if (root.value > value) {
@@ -67,21 +88,30 @@ class BST {
         root.left = newNode;
         return;
       }
-      return this.insertRec(value, root.left);
+      return this._insertRec(value, root.left);
     } else {
       if (!root.right) {
         root.right = newNode;
         return;
       }
-      return this.insertRec(value, root.right);
+      return this._insertRec(value, root.right);
     }
   }
 
-  insertIter(value) {
+  _insertIter(value) {
+    const newNode = new Node(value);
+    if (this.root === null) {
+      this.root = new Node(value);
+      return;
+    }
+
     let root = this.root;
     let prev = null;
 
-    const newNode = new Node(value);
+    if (root === null) {
+      root = newNode;
+      return;
+    }
 
     while (root !== null) {
       prev = root;
@@ -221,23 +251,22 @@ class BST {
         node = node.left;
       }
     }
-    
+
     if (node === null) return null;
 
     // Got to the node. Now check the depth
     while (node !== null) {
-        if (node.left) {
-
-        }
+      if (node.left) {
+      }
     }
-   
+
     return depth;
   }
 
   _getNodeHeight(node) {
     if (node === null) return -1;
 
-    const left = this._getNodeHeight(node.left)
+    const left = this._getNodeHeight(node.left);
     const right = this._getNodeHeight(node.right);
 
     return 1 + Math.max(left, right);
@@ -246,19 +275,25 @@ class BST {
   heightRec(value) {
     const node = this.searchIter(value);
     if (node === null) {
-        return -1;
+      return -1;
     }
 
-    const left = this._getNodeHeight(node.left)
-    const right = this._getNodeHeight(node.right)
+    const left = this._getNodeHeight(node.left);
+    const right = this._getNodeHeight(node.right);
 
     return 1 + Math.max(left, right);
   }
 }
 
 const bst = new BST([123, 12, 31, 45, 36546, 46, 2, 12, 3, 12, 325, 345]);
+const bst2 = new BST([]);
+
+bst2.insert(1);
+bst2.insert(2);
+bst2.insert(0);
+prettyPrint(bst2);
 
 // console.log(bst.depthRec(12, bst.root));
-console.log(bst.heightRec(12));
+// console.log(bst.searchRec(123));
 
-prettyPrint(bst);
+// prettyPrint(bst);
